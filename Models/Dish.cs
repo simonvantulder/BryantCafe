@@ -32,10 +32,10 @@ namespace BryantCornerCafe.Models
         public int ChefId { get; set; }
         public User Chef { get; set; } 
 
-        //One Category to Many Dishes
+        //One SubCategory to Many Dishes
 
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public int SubCategoryId { get; set; }
+        public SubCategory ParentSubCat { get; set; }
 
     }
 

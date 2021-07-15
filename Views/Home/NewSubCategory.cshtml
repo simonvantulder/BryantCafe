@@ -1,0 +1,20 @@
+@model SubCategory
+<div>
+
+    <h1>Add a New Meal SubCategory</h1>
+    <a asp-controller="Home" asp-action="Dashboard" >Dashboard</a>
+    <a asp-controller="Home" asp-action="Logout">Logout</a>
+
+</div>
+
+
+        <form asp-controller="Home" asp-action="CreateSubCategory" class="shadow p-3 mb-5 rounded" method="POST">
+
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <span asp-validation-for="Name" class="text-danger font-weight-bold"></span>
+                <input asp-for="Name" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-outline-success">Create</button>
+        </form>  

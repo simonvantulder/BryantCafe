@@ -1,0 +1,14 @@
+@model Category
+
+
+
+
+        <ul>
+@foreach (Dish meal in ViewBag.MyDishes)
+    {
+            <li>@meal.Name</li>
+    }
+        </ul>
+
+
+        

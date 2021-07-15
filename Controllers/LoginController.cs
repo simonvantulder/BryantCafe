@@ -21,18 +21,18 @@ namespace BryantCornerCafe.Controllers
             db = context;
         }
 
-        private int? uid
+        public int? uid
         {
             get
             {
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                // HttpContext.Session.SetInt32("UserId", 1); ////////////////////////////////////////////////////////////////////delete this 4 deployment!
+                HttpContext.Session.SetInt32("UserId", 1); ////////////////////////////////////////////////////////////////////delete this 4 deployment!
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 return HttpContext.Session.GetInt32("UserId");
             }
         }
 
-        private bool isLoggedIn
+        public bool isLoggedIn
         {
             get
             {
@@ -40,29 +40,27 @@ namespace BryantCornerCafe.Controllers
             }
         }
 
-        [HttpGet("")]
-        public IActionResult LoginRegPage()
-        {
-            
-            return View("Index");
-        }
-
 
         [HttpGet("/loginpage")]
         public IActionResult LoginPage()
         {
             
-            return View("_Login");
+            return View("Login");
         }
 
         [HttpGet("/registerpage")]
         public IActionResult RegisterPage()
         {
-            
-            return View("_Register");
+            if(isLoggedIn == false)
+            {
+                Console.WriteLine("++++++++++++++++++++++++++++++++++++++++");
+                Console.WriteLine("supersecrethacker");
+                return RedirectToAction("LoginRegPage", "Home");
+            }
+            return View("Register");
         }
 
-        [HttpGet("/register")]
+        [HttpPost("/register")]
         public IActionResult Register(User newUser)
         {
             if (ModelState.IsValid)
@@ -86,7 +84,7 @@ namespace BryantCornerCafe.Controllers
                 Send back to the page with the form so error messages are
                 displayed with the filled in input data.
                 */
-                return View("Index");
+                return View("Dashboard", "Home");
             }
 
 
@@ -104,55 +102,55 @@ namespace BryantCornerCafe.Controllers
             
             HttpContext.Session.SetInt32("UserId", newUser.UserId);
             HttpContext.Session.SetString("FullName", newUser.FullName());
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("Dashboard", "Home");
         }
 
 
-        // [HttpPost("Login")]
-        // public IActionResult Login(LoginUser LoginUser)
-        // {
-        //     string genericErrMsg = "Invalid Email or Password";
+        [HttpPost("/login")]
+        public IActionResult Login(LoginUser LoginUser)
+        {
+            string genericErrMsg = "Invalid Email or Password";
 
-        //     if (ModelState.IsValid == false)
-        //     {
-        //         /* 
-        //         Send back to the page with the form so error messages are
-        //         displayed with the filled in input data.
-        //         */
-        //         return View("Index");
-        //     }
+            if (ModelState.IsValid == false)
+            {
+                /* 
+                Send back to the page with the form so error messages are
+                displayed with the filled in input data.
+                */
+                return View("Dashboard", "Home");
+            }
 
-        //     //find user attached to the email address used to log in
-        //     User LoggedInUser = db.Users.FirstOrDefault(p => p.Email == LoginUser.LoginEmail);
+            //find user attached to the email address used to log in
+            User LoggedInUser = db.Users.FirstOrDefault(p => p.Email == LoginUser.LoginEmail);
 
-        //     if (LoggedInUser == null)
-        //     {
-        //         ModelState.AddModelError("LoginEmail", genericErrMsg);
-        //         Console.WriteLine(new String('*', 30) + "Login: Email not found");
+            if (LoggedInUser == null)
+            {
+                ModelState.AddModelError("LoginEmail", genericErrMsg);
+                Console.WriteLine(new String('*', 30) + "Login: Email not found");
 
-        //         return View("Index");
-        //     }
+                return View("Dashboard", "Home");
+            }
             
-        //     //User found b/c the above did not return
-        //     PasswordHasher<LoginUser> hasher = new PasswordHasher<LoginUser>();
-        //     PasswordVerificationResult ComparePasswords = hasher.VerifyHashedPassword(LoginUser, LoggedInUser.Password, LoginUser.LoginPassword);
+            //User found b/c the above did not return
+            PasswordHasher<LoginUser> hasher = new PasswordHasher<LoginUser>();
+            PasswordVerificationResult ComparePasswords = hasher.VerifyHashedPassword(LoginUser, LoggedInUser.Password, LoginUser.LoginPassword);
 
-        //     if(ComparePasswords == 0)
-        //     {
-        //         ModelState.AddModelError("LoginEmail", genericErrMsg);
-        //         return View("Index");
-        //     }
-        //     HttpContext.Session.SetInt32("UserId", LoggedInUser.UserId);
-        //     HttpContext.Session.SetString("FullName", LoggedInUser.FullName());
+            if(ComparePasswords == 0)
+            {
+                ModelState.AddModelError("LoginEmail", genericErrMsg);
+                return View("Dashboard", "Home");
+            }
+            HttpContext.Session.SetInt32("UserId", LoggedInUser.UserId);
+            HttpContext.Session.SetString("FullName", LoggedInUser.FullName());
 
-        //     return RedirectToAction("Dashboard");
-        // }
-        // [HttpGet("logout")]
-        // public IActionResult Logout()
-        // {
-        //     HttpContext.Session.Clear();
-        //     return RedirectToAction("Index");
-        // }
+            return RedirectToAction("Dashboard", "Home");
+        }
+        [HttpGet("logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Dashboard", "Home");
+        }
 
 //============================================================================================================================================================================
 //============================================================================================================================================================================

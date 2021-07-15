@@ -1,0 +1,46 @@
+@model Category
+@{
+    ViewData["Title"] = "Bryant Cafe Menu";
+
+}
+
+
+
+
+<h1>@Model.Name</h1>
+<h2>@Model.HoursAvailable</h2>
+
+<table style="width:100%">
+    
+
+@foreach (SubCategory item in @Model.MySubCats)
+{
+    @* bool existingResponse = item.Tourists.Any(rsvp => rsvp.UserTouristId == (int)uid); *@
+    @foreach (Dish meal in item.MyDishes)
+    {
+        <ul>
+            <li>@meal.Name</li>
+        </ul>
+
+        <tr>
+            <td>@meal.Description </td>
+            <td>@meal.Price </td>
+            <td>
+                @* @if (uid)///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// *@
+                {
+                    @* Delete could be a GET request, but POST is better practice *@
+                    <form asp-controller="Home" asp-action="Delete" asp-route-dishId="@meal.DishId" method="POST"
+            class="d-inline-block">
+                        <button class="btn btn-sm btn-outline-danger">Delete this Dish</button>
+                    </form>
+                    <a asp-controller="Home" asp-action="EditDish" asp-route-DishId="@meal.DishId" method="GET"
+            class="d-inline-block">
+                        <button class="btn btn-sm btn-outline-warning">Edit my Dish</button>
+                    </a>
+                }
+            </td>
+        </tr>
+    }
+}
+</table>
+

@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using BryantCornerCafe.Models;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace BryantCornerCafe.Controllers
 {
@@ -20,12 +21,30 @@ namespace BryantCornerCafe.Controllers
             db = context;
         }
 
-        [HttpGet("/index")]
-        public IActionResult Index()
+        public int? uid
         {
-            return View("Index");
-            // return View("All");
+            get
+            {
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                HttpContext.Session.SetInt32("UserId", 1); ////////////////////////////////////////////////////////////////////delete this 4 deployment!
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                return HttpContext.Session.GetInt32("UserId");
+            }
         }
+        private bool isLoggedIn
+        {
+            get
+            {
+                return uid != null;
+            }
+        }
+
+        [HttpGet("")]
+        public IActionResult Dashboard()
+        {
+            return View("Dashboard");
+        }
+
 
         [HttpGet("/dishes")]
         public IActionResult All()
@@ -34,23 +53,56 @@ namespace BryantCornerCafe.Controllers
             .Include(Dish => Dish.Chef)
             .OrderByDescending(Dish => Dish.CreatedAt)
             .ToList();
-            ViewBag.AllDishes =  allDishes;
+            ViewBag.AllDishes = allDishes;
             return View("All", allDishes);
             // return View("All");
         }
 
 
-        // handles the GET request to DISPLAY the form used to create a new Post
-        [HttpGet("/dishes/new")]
-        public IActionResult New()
+        [HttpGet("/viewmenu/{categoryId}")]
+        public IActionResult ViewMenu(int categoryId)
         {
-            List<User> allUsers = db.Users.OrderByDescending(User => User.CreatedAt).ToList();
-            ViewBag.AllUsers = allUsers;
-
-            return View("New");
+            Category category = db.Categories.Include(category => category.MySubCats).ThenInclude(subc => subc.MyDishes).FirstOrDefault(p => p.CategoryId == categoryId);
+            if (category == null)
+            {
+                return RedirectToAction("Dashboard");
+            }
+            // List<Dish> allDishes = db.Dishes
+            // .Include(Dish => Dish.Chef)
+            // .OrderByDescending(Dish => Dish.CreatedAt)
+            // .ToList();
+            // ViewBag.AllDishes = allDishes;
+            return View("ViewMenu", category);
         }
 
-        
+
+        // handles the GET request to DISPLAY the form used to create a new Dish
+        [HttpGet("/dishes/new")]
+        public IActionResult NewDish()
+        {
+            List<Category> allCategories = db.Categories.OrderByDescending(Categories => Categories.CreatedAt).ToList();
+            List<SubCategory> allSubCategories = db.SubCategories.OrderByDescending(SubCategories => SubCategories.CreatedAt).ToList();
+            ViewBag.AllCategories = allCategories;
+            ViewBag.AllSubCategories = allSubCategories;
+
+            return View("NewDish");
+        }
+
+
+        [HttpGet("/category/new")]
+        public IActionResult NewCategory()
+        {
+            return View("NewCategory");
+        }
+
+
+        [HttpGet("/subcategory/new")]
+        public IActionResult NewSubCategory()
+        {
+            return View("NewSubCategory");
+        }
+
+
         [HttpGet("/user/new")]
         public IActionResult NewUser()
         {
@@ -58,7 +110,66 @@ namespace BryantCornerCafe.Controllers
         }
 
 
-        // Params from the URL get turned into method params.
+        [HttpPost("/category/create")]
+        public IActionResult CreateCategory(Category newCategory)
+        {
+            if (!isLoggedIn)
+            {
+                return RedirectToAction("LoginPage", "Login");
+            }
+            if (!ModelState.IsValid)
+            {
+                // To display validation errors.
+                return View("NewCategory");
+            }
+
+            db.Categories.Add(newCategory);
+            db.SaveChanges();
+
+            return RedirectToAction("NewCategory");
+        }
+
+
+        [HttpPost("/subcategory/create")]
+        public IActionResult CreateSubCategory(SubCategory newSubCategory)
+        {
+            if (!isLoggedIn)
+            {
+                return RedirectToAction("LoginPage", "Login");
+            }
+            if (!ModelState.IsValid)
+            {
+                // To display validation errors.
+                return View("NewSubCategory");
+            }
+
+            db.SubCategories.Add(newSubCategory);
+            db.SaveChanges();
+
+            return RedirectToAction("NewSubCategory");
+        }
+
+
+        [HttpPost("/dish/create")]
+        public IActionResult CreateDish(Dish newDish)
+        {
+            if (!isLoggedIn)
+            {
+                return RedirectToAction("LoginPage", "Login");
+            }
+            if (!ModelState.IsValid)
+            {
+                // To display validation errors.
+                return View("NewDish");
+            }
+
+            db.Dishes.Add(newDish);
+            db.SaveChanges();
+
+            return RedirectToAction("NewDish");
+        }
+
+
         [HttpGet("/dish/{dishId}")]
         public IActionResult Details(int dishId)
         {
@@ -66,13 +177,14 @@ namespace BryantCornerCafe.Controllers
 
             if (dish == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Dashboard");
             }
 
             return View("Detail", dish);
         }
 
-        
+
+        // add password change form to page
         [HttpGet("/user/{userId}")]
         public IActionResult UserDetails(int userId)
         {
@@ -80,74 +192,40 @@ namespace BryantCornerCafe.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Dashboard");
             }
 
             return View("UserDetail", user);
         }
 
 
-            [HttpPost("/dishes/create")]
-        public IActionResult CreateProd(Dish newDish)
-        {
-            if (ModelState.IsValid == false)
-            {
-                /* 
-                Send back to the page with the form so error messages are
-                displayed with the filled in input data.
-                */
-                return View("New");
-            }
-
-            // ModelState IS valid
-
-            newDish.ChefId = newDish.ChefId;
-            db.Dishes.Add(newDish); 
-            // db doesn't update until we run save changes
-            // After SaveChanges, our newDish object now has it's DishId from the db.
-            db.SaveChanges();
-
-            return RedirectToAction("All");
-        }
-
-        
-            [HttpPost("/user/create")]
-        public IActionResult CreateCat(User newUser)
-        {
-            if (ModelState.IsValid == false)
-            {
-                /* 
-                Send back to the page with the form so error messages are
-                displayed with the filled in input data.
-                */
-                return View("NewUser");
-            }
-
-            // ModelState IS valid
-
-            /* 
-            This Add method auto generates SQL code:
-            INSERT INTO Dishes (Topic, Body, ImgUrl, CreatedAt, UpdatedAt)
-            VALUES ("topic data", "body data", "img url data", NOW(), NOW());
-            */
-            db.Users.Add(newUser); //accidentally forgot to rename DB from Users to Dishes
-            // db doesn't update until we run save changes
-            // After SaveChanges, our newDish object now has it's DishId from the db.
-            db.SaveChanges();
-
-            return RedirectToAction("All");
-        }
-
-
         [HttpGet("/dishes/edit/{dishId}")]
-        public IActionResult Edit(int dishId)
+        public IActionResult EditDish(int dishId)
         {
             Dish dish = db.Dishes.FirstOrDefault(p => p.DishId == dishId);
 
-            return View("Edit", dish);
+            return View("EditDish", dish);
         }
 
-        
+
+        [HttpGet("/category/edit/{categoryId}")]
+        public IActionResult EditCategory(int categoryId)
+        {
+            Category category = db.Categories.FirstOrDefault(p => p.CategoryId == categoryId);
+
+            return View("EditCategory", category);
+        }
+
+
+        [HttpGet("/subcategory/edit/{subcategoryId}")]
+        public IActionResult EditSubCategory(int subcategoryId)
+        {
+            SubCategory subcategory = db.SubCategories.FirstOrDefault(p => p.SubCategoryId == subcategoryId);
+
+            return View("EditSubCategory", subcategory);
+        }
+
+
         [HttpGet("/user/edit/{userId}")]
         public IActionResult EditUser(int userId)
         {
@@ -187,7 +265,7 @@ namespace BryantCornerCafe.Controllers
         }
 
 
-            [HttpPost("/user/update/{userId}")]
+        [HttpPost("/user/update/{userId}")]
         public IActionResult UpdateUser(User newUser, int userId)
         {
             User user = db.Users.FirstOrDefault(p => p.UserId == userId);
@@ -213,13 +291,44 @@ namespace BryantCornerCafe.Controllers
             db.Users.Update(user);
             db.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Dashboard");
         }
 
-        
+
+        [HttpPost("/category/link/{categoryId}/{subcategoryId}")]
+        public IActionResult Link(int categoryId, int subcategoryId)
+        {
+            if(!isLoggedIn)
+            {
+                return RedirectToAction("LoginRegPage", "Home");
+            }
+            CSubRel existingLink = db.CSubRels.FirstOrDefault(link => link.CategoryId == categoryId && link.SubCategoryId == subcategoryId);
+
+            if (existingLink != null)
+            {
+                Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++");
+                Console.WriteLine("unlink");
+                db.CSubRels.Remove(existingLink);
+            }
+            else
+            {
+                CSubRel newLink = new CSubRel()
+                {
+                    CategoryId = categoryId,
+                    SubCategoryId = subcategoryId,
+                };
+                db.CSubRels.Add(newLink);
+            }
+            
+            db.SaveChanges();
+
+            return RedirectToAction("Dashboard");
+        }
+
+
         [HttpPost("/dishes/delete/{dishId}")]
 
-        public IActionResult Delete (int dishId)
+        public IActionResult Delete(int dishId)
         {
             Dish dish = db.Dishes.FirstOrDefault(p => p.DishId == dishId);
 
@@ -230,9 +339,9 @@ namespace BryantCornerCafe.Controllers
             }
             return RedirectToAction("All");
         }
-        
+
         [HttpPost("/user/delete/{userId}")]
-        public IActionResult DeleteUser (int userId)
+        public IActionResult DeleteUser(int userId)
         {
             User user = db.Users.FirstOrDefault(p => p.UserId == userId);
 
@@ -241,7 +350,7 @@ namespace BryantCornerCafe.Controllers
                 db.Users.Remove(user);
                 db.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Dashboard");
         }
 
 

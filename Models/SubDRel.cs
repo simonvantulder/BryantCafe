@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BryantCornerCafe.Models
 {
-    public class UDRel
+    public class SubDRel
     {
         [Key] // Primary Key
-        public int UDRelId { get; set; }
+        public int SubDRelId { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
@@ -14,9 +14,9 @@ namespace BryantCornerCafe.Models
     //******************************************************************
     // relationships
     //******************************************************************
-        public int UserId { get; set; }
-        public User Chef { get; set; } 
+        public int SubCategoryId { get; set; }
+        public SubCategory ParentSubCat { get; set; } 
         public int DishId { get; set; }
-        public Dish ChefsDish { get; set; } 
+        public Dish MyDish { get; set; } 
     }
 }

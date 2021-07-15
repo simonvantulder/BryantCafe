@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BryantCornerCafe.Migrations
 {
     [DbContext(typeof(BryantCornerCafeContext))]
-    [Migration("20210713003551_fixModels")]
-    partial class fixModels
+    [Migration("20210714202613_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,7 +41,7 @@ namespace BryantCornerCafe.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("BryantCornerCafe.Models.Dish", b =>
@@ -70,6 +70,9 @@ namespace BryantCornerCafe.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SubCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -79,7 +82,35 @@ namespace BryantCornerCafe.Migrations
 
                     b.HasIndex("ChefId");
 
+                    b.HasIndex("SubCategoryId");
+
                     b.ToTable("Dishes");
+                });
+
+            modelBuilder.Entity("BryantCornerCafe.Models.SubCategory", b =>
+                {
+                    b.Property<int>("SubCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int?>("ParentCatCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("SubCategoryId");
+
+                    b.HasIndex("ParentCatCategoryId");
+
+                    b.ToTable("SubCategories");
                 });
 
             modelBuilder.Entity("BryantCornerCafe.Models.UDRel", b =>
@@ -145,7 +176,7 @@ namespace BryantCornerCafe.Migrations
             modelBuilder.Entity("BryantCornerCafe.Models.Dish", b =>
                 {
                     b.HasOne("BryantCornerCafe.Models.Category", "Category")
-                        .WithMany("MyDishes")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -156,9 +187,22 @@ namespace BryantCornerCafe.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BryantCornerCafe.Models.SubCategory", null)
+                        .WithMany("MyDishes")
+                        .HasForeignKey("SubCategoryId");
+
                     b.Navigation("Category");
 
                     b.Navigation("Chef");
+                });
+
+            modelBuilder.Entity("BryantCornerCafe.Models.SubCategory", b =>
+                {
+                    b.HasOne("BryantCornerCafe.Models.Category", "ParentCat")
+                        .WithMany("MySubCats")
+                        .HasForeignKey("ParentCatCategoryId");
+
+                    b.Navigation("ParentCat");
                 });
 
             modelBuilder.Entity("BryantCornerCafe.Models.UDRel", b =>
@@ -181,6 +225,11 @@ namespace BryantCornerCafe.Migrations
                 });
 
             modelBuilder.Entity("BryantCornerCafe.Models.Category", b =>
+                {
+                    b.Navigation("MySubCats");
+                });
+
+            modelBuilder.Entity("BryantCornerCafe.Models.SubCategory", b =>
                 {
                     b.Navigation("MyDishes");
                 });

@@ -2,23 +2,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
-
 namespace BryantCornerCafe.Models
 {
-    public class Category
+    public class SubCategory
     {
         [Key] // denotes PK, not needed if named ModelNameId
-        public int CategoryId { get; set; }
+        public int SubCategoryId { get; set; }
 
         [Required(ErrorMessage = "is required.")]
         [MinLength(2, ErrorMessage = "must be at least 2 characters")]
         [Display]
         public string Name { get; set; }
-
-
-        [Required(ErrorMessage = "is required.")]
-        public string HoursAvailable { get; set; }
-
 
 
         //=========================================================================
@@ -27,9 +21,11 @@ namespace BryantCornerCafe.Models
 
         //=========================================================================
 
-        //One Category to Many SubCategories 
-        public List<SubCategory> MySubCats { get; set; }
+        //One SubCategory to Many Dishes
+        public List<Dish> MyDishes { get; set; }
 
+        //One Category to many SubCategories
+        public Category ParentCat { get; set; }
     }
 
 

@@ -1,0 +1,43 @@
+@model SubCategory
+<div>
+
+    <h1>Edit a Meal SubCategory</h1>
+    <a asp-controller="Home" asp-action="Dashboard" >Dashboard</a>
+    <a asp-controller="Home" asp-action="Logout">Logout</a>
+
+</div>
+
+
+        <form asp-controller="Home" asp-action="UpdateSubCategory" asp-route-subcategoryId="@Model.SubCategoryId"class="shadow p-3 mb-5 rounded" method="POST">
+
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <span asp-validation-for="Name" class="text-danger font-weight-bold"></span>
+                <input asp-for="Name" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-outline-success">Create</button>
+        </form>  
+
+@* ============================================================================== *@
+
+        <h2>Or link SubCategories</h2>
+        @foreach (Dish item in ViewBag.MySubCats)
+{
+                bool existingLink = item.ParentSubCat.SubCategoryId == @Model.SubCategoryId;
+    <form asp-controller="Home" asp-action="LinkSubCat" asp-route-categoryId="@Model.SubCategoryId" asp-route-categoryId="@item.DishId">
+
+    @if(existingLink)
+                {
+                    <button class="btn btn-outline-danger">
+                        Delete Dish Link
+                    </button>
+                }
+                else 
+                {
+                    <button class="btn btn-outline-info">
+                        Link Dish
+                    </button>
+                }
+    </form>
+}

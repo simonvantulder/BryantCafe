@@ -31,8 +31,6 @@
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/BryantCornerCafe.TagHelpers.input.cache
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/BryantCornerCafe.TagHelpers.output.cache
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/BryantCornerCafe.RazorCoreGenerate.cache
-/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/Index.cshtml.g.cs
-/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/Privacy.cshtml.g.cs
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Shared/Error.cshtml.g.cs
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Shared/_Layout.cshtml.g.cs
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Shared/_ValidationScriptsPartial.cshtml.g.cs
@@ -46,6 +44,14 @@
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/ref/BryantCornerCafe.dll
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/BryantCornerCafe.pdb
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/BryantCornerCafe.genruntimeconfig.cache
-/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Login/Index.cshtml.g.cs
-/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Login/_Login.cshtml.g.cs
-/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Login/_Register.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Login/Login.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Login/Register.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/EditCategory.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/EditDish.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/EditSubCategory.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/NewCategory.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/NewDish.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/NewSubCategory.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/ViewMenu.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Shared/Dashboard.cshtml.g.cs
+/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/LinkModels.cshtml.g.cs
