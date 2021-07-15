@@ -14,6 +14,8 @@ namespace BryantCornerCafe.Models
         [Display]
         public string Name { get; set; }
 
+        public string Info { get; set; }
+
 
         //=========================================================================
         public DateTime CreatedAt { get; set; } = DateTime.Now;

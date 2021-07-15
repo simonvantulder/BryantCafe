@@ -54,4 +54,3 @@
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/NewSubCategory.cshtml.g.cs
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/ViewMenu.cshtml.g.cs
 /Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Shared/Dashboard.cshtml.g.cs
-/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/obj/Debug/net5.0/Razor/Views/Home/LinkModels.cshtml.g.cs

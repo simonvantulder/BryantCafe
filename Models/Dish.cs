@@ -19,7 +19,7 @@ namespace BryantCornerCafe.Models
         public string Description { get; set; }
 
         [Required(ErrorMessage = "is required.")]
-        public int Price { get; set; }
+        public float Price { get; set; }
 
 
         //=========================================================================
@@ -28,9 +28,9 @@ namespace BryantCornerCafe.Models
 
         //=========================================================================
 
-//One User/Chef to Many Dishes
-        public int ChefId { get; set; }
-        public User Chef { get; set; } 
+// //One User/Chef to Many Dishes
+//         public int ChefId { get; set; }
+//         public User Chef { get; set; } 
 
         //One SubCategory to Many Dishes
 

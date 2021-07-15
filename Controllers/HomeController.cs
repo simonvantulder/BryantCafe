@@ -50,7 +50,6 @@ namespace BryantCornerCafe.Controllers
         public IActionResult All()
         {
             List<Dish> allDishes = db.Dishes
-            .Include(Dish => Dish.Chef)
             .OrderByDescending(Dish => Dish.CreatedAt)
             .ToList();
             ViewBag.AllDishes = allDishes;
@@ -212,6 +211,11 @@ namespace BryantCornerCafe.Controllers
         public IActionResult EditCategory(int categoryId)
         {
             Category category = db.Categories.FirstOrDefault(p => p.CategoryId == categoryId);
+            
+            List<SubCategory> allSubCats = db.SubCategories
+            .OrderByDescending(SubC => SubC.CreatedAt)
+            .ToList();
+            ViewBag.AllSubCats = allSubCats;
 
             return View("EditCategory", category);
         }
@@ -221,6 +225,11 @@ namespace BryantCornerCafe.Controllers
         public IActionResult EditSubCategory(int subcategoryId)
         {
             SubCategory subcategory = db.SubCategories.FirstOrDefault(p => p.SubCategoryId == subcategoryId);
+
+            List<Dish> allDishes = db.Dishes
+            .OrderByDescending(Dish => Dish.CreatedAt)
+            .ToList();
+            ViewBag.AllDishes = allDishes;
 
             return View("EditSubCategory", subcategory);
         }
@@ -235,8 +244,60 @@ namespace BryantCornerCafe.Controllers
         }
 
 
+        [HttpPost("/category/update/{categoryId}")]
+        public IActionResult UpdateCategory(Category newCategory, int categoryId)
+        {
+            Category category = db.Categories.FirstOrDefault(p => p.CategoryId == categoryId);
+
+            if (ModelState.IsValid == false)
+            {
+                /* 
+                Send back to the page with the form so error messages are
+                displayed with the filled in input data.
+                */
+                return View("Edit");
+            }
+            category.Name = newCategory.Name;
+            category.Info = newCategory.Info;
+            category.UpdatedAt = DateTime.Now;
+            // ModelState IS valid
+
+            //"migrate" changes to db and save 
+            db.Categories.Update(category);
+            db.SaveChanges();
+
+            return RedirectToAction("Dashboard");
+        }
+
+
+        [HttpPost("/subcategory/update/{subcategoryId}")]
+        public IActionResult UpdateSubCategory(SubCategory newSubCategory, int subcategoryId)
+        {
+            SubCategory subcategory = db.SubCategories.FirstOrDefault(p => p.SubCategoryId == subcategoryId);
+
+            if (ModelState.IsValid == false)
+            {
+                /* 
+                Send back to the page with the form so error messages are
+                displayed with the filled in input data.
+                */
+                return View("Edit");
+            }
+            subcategory.Name = newSubCategory.Name;
+            subcategory.Info = newSubCategory.Info;
+            subcategory.UpdatedAt = DateTime.Now;
+            // ModelState IS valid
+
+            //"migrate" changes to db and save 
+            db.SubCategories.Update(subcategory);
+            db.SaveChanges();
+
+            return RedirectToAction("Dashboard");
+        }
+
+
         [HttpPost("/dishes/update/{dishId}")]
-        public IActionResult Update(Dish newDish, int dishId)
+        public IActionResult UpdateDish(Dish newDish, int dishId)
         {
             Dish dish = db.Dishes.FirstOrDefault(p => p.DishId == dishId);
 
@@ -249,7 +310,8 @@ namespace BryantCornerCafe.Controllers
                 return View("Edit");
             }
             dish.Name = newDish.Name;
-            dish.Chef = newDish.Chef;
+            dish.Description = newDish.Description;
+            dish.Price = newDish.Price;
             dish.UpdatedAt = DateTime.Now;
             // ModelState IS valid
 
@@ -261,7 +323,7 @@ namespace BryantCornerCafe.Controllers
             db.Dishes.Update(dish);
             db.SaveChanges();
 
-            return RedirectToAction("All");
+            return RedirectToAction("Dashboard");
         }
 
 
@@ -296,11 +358,11 @@ namespace BryantCornerCafe.Controllers
 
 
         [HttpPost("/category/link/{categoryId}/{subcategoryId}")]
-        public IActionResult Link(int categoryId, int subcategoryId)
+        public IActionResult LinkSubCat(int categoryId, int subcategoryId)
         {
             if(!isLoggedIn)
             {
-                return RedirectToAction("LoginRegPage", "Home");
+                return RedirectToAction("LoginPage", "Login");
             }
             CSubRel existingLink = db.CSubRels.FirstOrDefault(link => link.CategoryId == categoryId && link.SubCategoryId == subcategoryId);
 
@@ -318,6 +380,37 @@ namespace BryantCornerCafe.Controllers
                     SubCategoryId = subcategoryId,
                 };
                 db.CSubRels.Add(newLink);
+            }
+            
+            db.SaveChanges();
+
+            return RedirectToAction("EditCategory", "Home", categoryId);
+        }
+
+
+        [HttpPost("/subcategory/link/{subcategoryId}/{dishId}")]
+        public IActionResult LinkDish(int subcategoryId, int dishId)
+        {
+            if(!isLoggedIn)
+            {
+                return RedirectToAction("LoginPage", "Login");
+            }
+            SubDRel existingLink = db.SubDRels.FirstOrDefault(link => link.SubCategoryId == subcategoryId && link.SubCategoryId == subcategoryId);
+
+            if (existingLink != null)
+            {
+                Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++");
+                Console.WriteLine("unlink");
+                db.SubDRels.Remove(existingLink);
+            }
+            else
+            {
+                SubDRel newLink = new SubDRel()
+                {
+                    SubCategoryId = subcategoryId,
+                    DishId = dishId,
+                };
+                db.SubDRels.Add(newLink);
             }
             
             db.SaveChanges();

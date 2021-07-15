@@ -15649,11 +15649,6 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/Views/Home/LinkModels.cshtml",
-      "TargetPath": "Views\\Home\\LinkModels.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "/Users/simonvantulder/Desktop/CodingDojo/C#/FullStack/BryantCornerCafe/Views/_ViewStart.cshtml",
       "TargetPath": "Views\\_ViewStart.cshtml",
       "FileKind": "mvc"

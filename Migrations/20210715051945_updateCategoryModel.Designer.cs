@@ -3,14 +3,16 @@ using System;
 using BryantCornerCafe.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BryantCornerCafe.Migrations
 {
     [DbContext(typeof(BryantCornerCafeContext))]
-    partial class BryantCornerCafeContextModelSnapshot : ModelSnapshot
+    [Migration("20210715051945_updateCategoryModel")]
+    partial class updateCategoryModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,6 +77,9 @@ namespace BryantCornerCafe.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("ChefId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -86,8 +91,8 @@ namespace BryantCornerCafe.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<int>("SubCategoryId")
                         .HasColumnType("int");
@@ -95,14 +100,11 @@ namespace BryantCornerCafe.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("DishId");
 
-                    b.HasIndex("SubCategoryId");
+                    b.HasIndex("ChefId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SubCategoryId");
 
                     b.ToTable("Dishes");
                 });
@@ -115,9 +117,6 @@ namespace BryantCornerCafe.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Info")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -217,15 +216,19 @@ namespace BryantCornerCafe.Migrations
 
             modelBuilder.Entity("BryantCornerCafe.Models.Dish", b =>
                 {
+                    b.HasOne("BryantCornerCafe.Models.User", "Chef")
+                        .WithMany("MyDishes")
+                        .HasForeignKey("ChefId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BryantCornerCafe.Models.SubCategory", "ParentSubCat")
                         .WithMany("MyDishes")
                         .HasForeignKey("SubCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BryantCornerCafe.Models.User", null)
-                        .WithMany("MyDishes")
-                        .HasForeignKey("UserId");
+                    b.Navigation("Chef");
 
                     b.Navigation("ParentSubCat");
                 });

@@ -17,7 +17,7 @@ namespace BryantCornerCafe.Models
 
 
         [Required(ErrorMessage = "is required.")]
-        public string HoursAvailable { get; set; }
+        public string Info { get; set; }
 
 
 

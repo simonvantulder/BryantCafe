@@ -1,49 +1,51 @@
 @model Category
 <div>
 
-    <h1>Edit your Meal Category</h1>
+    <h1>Edit @Model.Name</h1>
     <a asp-controller="Home" asp-action="Dashboard" >Dashboard</a>
     <a asp-controller="Home" asp-action="Logout">Logout</a>
 
 </div>
 
 
-        <form asp-controller="Home" asp-action="UpdateCategory" asp-route-categoryId="@Model.CategoryId"class="shadow p-3 mb-5 rounded" method="POST">
+<form asp-controller="Home" asp-action="UpdateCategory" asp-route-categoryId="@Model.CategoryId"class="shadow p-3 mb-5 rounded" method="POST">
 
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <span asp-validation-for="Name" class="text-danger font-weight-bold"></span>
-                <input asp-for="Name" class="form-control">
-            </div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <span asp-validation-for="Name" class="text-danger font-weight-bold"></span>
+        <input asp-for="Name" class="form-control">
+    </div>
 
-            <div class="form-group">
-                <label asp-for="HoursAvailable"></label>
-                <span asp-validation-for="HoursAvailable" class="text-danger font-weight-bold"></span>
-                <input asp-for="HoursAvailable" class="form-control">
-            </div>
+    <div class="form-group">
+        <label asp-for="Info"></label>
+        <span asp-validation-for="Info" class="text-danger font-weight-bold"></span>
+        <input asp-for="Info" class="form-control">
+    </div>
 
-            <button type="submit" class="btn btn-outline-success">Edit</button>
-        </form>  
+    <button type="submit" class="btn btn-outline-success">Update</button>
+</form>  
 
 @* ============================================================================== *@
 
 <h2>Or link SubCategories</h2>
-        @foreach (SubCategory item in ViewBag.MySubCats)
-{
-                bool existingLink = item.ParentCat.CategoryId == @Model.CategoryId;
-    <form asp-controller="Home" asp-action="LinkSubCat" asp-route-categoryId="@Model.CategoryId" asp-route-categoryId="@item.SubCategoryId">
 
-    @if(existingLink)
-                {
-                    <button class="btn btn-outline-danger">
-                        Delete SubCategory Link
-                    </button>
-                }
-                else 
-                {
-                    <button class="btn btn-outline-info">
-                        Link SubCategory
-                    </button>
-                }
+@foreach (SubCategory item in ViewBag.AllSubCats)
+{
+    @* bool existingLink = item.ParentCat.CategoryId == @Model.CategoryId; *@
+    <form asp-controller="Home" asp-action="LinkSubCat" asp-route-categoryId="@Model.CategoryId" asp-route-subcategoryId="@item.SubCategoryId">
+        <br>
+        <p>@item.Name</p>
+    @* @if(existingLink) 
+        { *@
+            <button class="btn btn-outline-danger">
+                Delete SubCategory Link
+            </button>
+        @* }
+        else 
+        { *@
+            <button class="btn btn-outline-info">
+                Link SubCategory
+            </button>
+        @* } *@
     </form>
 }

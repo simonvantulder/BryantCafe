@@ -3,14 +3,16 @@ using System;
 using BryantCornerCafe.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BryantCornerCafe.Migrations
 {
     [DbContext(typeof(BryantCornerCafeContext))]
-    partial class BryantCornerCafeContextModelSnapshot : ModelSnapshot
+    [Migration("20210715060946_updateDishModel")]
+    partial class updateDishModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,6 +77,9 @@ namespace BryantCornerCafe.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("ChefId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -95,14 +100,11 @@ namespace BryantCornerCafe.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("DishId");
 
-                    b.HasIndex("SubCategoryId");
+                    b.HasIndex("ChefId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SubCategoryId");
 
                     b.ToTable("Dishes");
                 });
@@ -217,15 +219,19 @@ namespace BryantCornerCafe.Migrations
 
             modelBuilder.Entity("BryantCornerCafe.Models.Dish", b =>
                 {
+                    b.HasOne("BryantCornerCafe.Models.User", "Chef")
+                        .WithMany("MyDishes")
+                        .HasForeignKey("ChefId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BryantCornerCafe.Models.SubCategory", "ParentSubCat")
                         .WithMany("MyDishes")
                         .HasForeignKey("SubCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BryantCornerCafe.Models.User", null)
-                        .WithMany("MyDishes")
-                        .HasForeignKey("UserId");
+                    b.Navigation("Chef");
 
                     b.Navigation("ParentSubCat");
                 });
