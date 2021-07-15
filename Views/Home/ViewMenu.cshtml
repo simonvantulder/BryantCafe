@@ -4,13 +4,10 @@
 
 }
 
-
-
-
 <h1>@Model.Name</h1>
 <h2>@Model.Info</h2>
 
-<table style="width:100%">
+@* <table style="width:100%"> *@
     
 
 @foreach (SubCategory item in @Model.MySubCats)
@@ -22,10 +19,10 @@
             <li>@meal.Name</li>
         </ul>
 
-        <tr>
-            <td>@meal.Description </td>
-            <td>@meal.Price </td>
-            <td>
+        <ul>
+            <li>@meal.Description </li>
+            <li>@meal.Price </li>
+            <li>
             @* @if (uid)///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// *@
             {
                 @* Delete could be a GET request, but POST is better practice *@
@@ -38,9 +35,9 @@
                     <button class="btn btn-sm btn-outline-warning">Edit my Dish</button>
                 </a>
             }
-            </td>
-        </tr>
+            </li>
+        </ul>
     }
 }
-</table>
+@* </table> *@
 

@@ -54,7 +54,6 @@ namespace BryantCornerCafe.Controllers
             .ToList();
             ViewBag.AllDishes = allDishes;
             return View("All", allDishes);
-            // return View("All");
         }
 
 
@@ -62,6 +61,8 @@ namespace BryantCornerCafe.Controllers
         public IActionResult ViewMenu(int categoryId)
         {
             Category category = db.Categories.Include(category => category.MySubCats).ThenInclude(subc => subc.MyDishes).FirstOrDefault(p => p.CategoryId == categoryId);
+            
+
             if (category == null)
             {
                 return RedirectToAction("Dashboard");
@@ -72,19 +73,6 @@ namespace BryantCornerCafe.Controllers
             // .ToList();
             // ViewBag.AllDishes = allDishes;
             return View("ViewMenu", category);
-        }
-
-
-        // handles the GET request to DISPLAY the form used to create a new Dish
-        [HttpGet("/dishes/new")]
-        public IActionResult NewDish()
-        {
-            List<Category> allCategories = db.Categories.OrderByDescending(Categories => Categories.CreatedAt).ToList();
-            List<SubCategory> allSubCategories = db.SubCategories.OrderByDescending(SubCategories => SubCategories.CreatedAt).ToList();
-            ViewBag.AllCategories = allCategories;
-            ViewBag.AllSubCategories = allSubCategories;
-
-            return View("NewDish");
         }
 
 
@@ -99,6 +87,18 @@ namespace BryantCornerCafe.Controllers
         public IActionResult NewSubCategory()
         {
             return View("NewSubCategory");
+        }
+
+
+        // handles the GET request to DISPLAY the form used to create a new Dish
+        [HttpGet("/dishes/new")]
+        public IActionResult NewDish()
+        {
+            // List<Category> allCategories = db.Categories.OrderByDescending(Categories => Categories.CreatedAt).ToList();
+            List<SubCategory> allSubCategories = db.SubCategories.OrderByDescending(SubCategories => SubCategories.Name).Reverse().ToList();
+            ViewBag.AllSubCats = allSubCategories;
+
+            return View("NewDish");
         }
 
 

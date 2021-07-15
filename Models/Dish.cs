@@ -15,11 +15,10 @@ namespace BryantCornerCafe.Models
         public string Name { get; set; }
 
         [Required(ErrorMessage = "is required.")]
-        [MinLength(2, ErrorMessage = "must be at least 2 characters")]
+        [MinLength(2, ErrorMessage = "must be at least 2 characters")]     
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "is required.")]
-        public float Price { get; set; }
+        public double Price { get; set; }
 
 
         //=========================================================================
@@ -29,8 +28,6 @@ namespace BryantCornerCafe.Models
         //=========================================================================
 
 // //One User/Chef to Many Dishes
-//         public int ChefId { get; set; }
-//         public User Chef { get; set; } 
 
         //One SubCategory to Many Dishes
 

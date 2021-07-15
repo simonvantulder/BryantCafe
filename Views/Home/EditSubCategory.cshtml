@@ -31,20 +31,20 @@
 @foreach (Dish item in ViewBag.AllDishes)
 {
     <br>
-    bool existingLink = item.ParentSubCat.SubCategoryId == @Model.SubCategoryId;
+    @* bool existingLink = item.ParentSubCat.SubCategoryId == @Model.SubCategoryId; *@
     <form asp-controller="Home" asp-action="LinkSubCat" asp-route-categoryId="@Model.SubCategoryId" asp-route-categoryId="@item.DishId">
 
-        @if(existingLink)
-            {
+        @* @if(existingLink) 
+            {*@
                 <button class="btn btn-outline-danger">
                     Delete Dish Link
                 </button>
-            }
+            @* } 
             else 
-            {
+            {*@
                 <button class="btn btn-outline-info">
                     Link Dish
                 </button>
-            }
+            @* } *@
     </form>
 }
