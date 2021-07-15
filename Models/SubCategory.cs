@@ -27,6 +27,9 @@ namespace BryantCornerCafe.Models
         public List<Dish> MyDishes { get; set; }
 
         //One Category to many SubCategories
+
+        [Display(Name = "Meal Category")]
+        public int CategoryId  { get; set; }
         public Category ParentCat { get; set; }
     }
 

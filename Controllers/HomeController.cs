@@ -86,6 +86,9 @@ namespace BryantCornerCafe.Controllers
         [HttpGet("/subcategory/new")]
         public IActionResult NewSubCategory()
         {
+            List<Category> allCategories = db.Categories.OrderByDescending(Categories => Categories.Name).Reverse().ToList();
+            ViewBag.AllCats = allCategories;
+            
             return View("NewSubCategory");
         }
 
@@ -94,7 +97,6 @@ namespace BryantCornerCafe.Controllers
         [HttpGet("/dishes/new")]
         public IActionResult NewDish()
         {
-            // List<Category> allCategories = db.Categories.OrderByDescending(Categories => Categories.CreatedAt).ToList();
             List<SubCategory> allSubCategories = db.SubCategories.OrderByDescending(SubCategories => SubCategories.Name).Reverse().ToList();
             ViewBag.AllSubCats = allSubCategories;
 

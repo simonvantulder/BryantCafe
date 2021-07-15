@@ -28,6 +28,17 @@
         <input asp-for="Price" class="form-control">
     </div>
 
+    <div class="form-group">
+        <label asp-for="SubCategoryId"></label>
+        <span asp-validation-for="SubCategoryId" class="text-danger font-weight-bold"></span>
+        <select asp-for="SubCategoryId" class="form-control">
+            @foreach (SubCategory item in ViewBag.AllSubCats)
+            {
+                <option value="@item.SubCategoryId">@item.Name</option>
+            }
+        </select>
+    </div>
+
 
     <button type="submit" class="btn btn-outline-success">Update</button>
 </form>  

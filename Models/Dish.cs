@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System;
 namespace BryantCornerCafe.Models
 {
@@ -31,6 +29,7 @@ namespace BryantCornerCafe.Models
 
         //One SubCategory to Many Dishes
 
+        [Display(Name = "SubCategory")]
         public int SubCategoryId { get; set; }
         public SubCategory ParentSubCat { get; set; }
 
