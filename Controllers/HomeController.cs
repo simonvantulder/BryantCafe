@@ -61,7 +61,8 @@ namespace BryantCornerCafe.Controllers
         public IActionResult ViewMenu(int categoryId)
         {
             Category category = db.Categories.Include(category => category.MySubCats).ThenInclude(subc => subc.MyDishes).FirstOrDefault(p => p.CategoryId == categoryId);
-            
+            // List<SubCategory> subcategories = db.SubCategories.Include(sub => sub?.CategoryId != categoryId).ToList();
+            // ViewBag.MySubCats = category.MySubCats.OrderByDescending(s => s.CreatedAt).ToList();
 
             if (category == null)
             {
@@ -88,13 +89,13 @@ namespace BryantCornerCafe.Controllers
         {
             List<Category> allCategories = db.Categories.OrderByDescending(Categories => Categories.Name).Reverse().ToList();
             ViewBag.AllCats = allCategories;
-            
+
             return View("NewSubCategory");
         }
 
 
         // handles the GET request to DISPLAY the form used to create a new Dish
-        [HttpGet("/dishes/new")]
+        [HttpGet("/dish/new")]
         public IActionResult NewDish()
         {
             List<SubCategory> allSubCategories = db.SubCategories.OrderByDescending(SubCategories => SubCategories.Name).Reverse().ToList();
@@ -268,7 +269,7 @@ namespace BryantCornerCafe.Controllers
             db.Categories.Update(category);
             db.SaveChanges();
 
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("ViewMenu", "Home", categoryId);
         }
 
 
@@ -376,6 +377,8 @@ namespace BryantCornerCafe.Controllers
             }
             else
             {
+                Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++");
+                Console.WriteLine("link");
                 CSubRel newLink = new CSubRel()
                 {
                     CategoryId = categoryId,
@@ -386,7 +389,7 @@ namespace BryantCornerCafe.Controllers
             
             db.SaveChanges();
 
-            return RedirectToAction("EditCategory", "Home", categoryId);
+            return RedirectToAction("EditSubCategory", "Home", subcategoryId);
         }
 
 

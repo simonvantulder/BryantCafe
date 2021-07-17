@@ -6,11 +6,13 @@
 
 <h1>@Model.Name</h1>
 <h2>@Model.Info</h2>
-
+<a asp-controller="Home" asp-action="EditCategory" asp-route-dishId="@Model.CategoryId">
+                edit @Model.Name
+            </a>
 @* <table style="width:100%"> *@
     
 
-@foreach (SubCategory item in @Model.MySubCats)
+@foreach (SubCategory item in ViewBag.MySubCats)
 {
     @* bool existingResponse = item.Tourists.Any(rsvp => rsvp.UserTouristId == (int)uid); *@
     @foreach (Dish meal in item.MyDishes)

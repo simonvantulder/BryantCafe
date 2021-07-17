@@ -26,7 +26,7 @@ namespace BryantCornerCafe
         {
             services.AddDbContext<BryantCornerCafeContext>(options => options.UseMySql(
                     Configuration["DBInfo:ConnectionString"],
-                    ServerVersion.FromString("8.0.24-mysql")));
+                    ServerVersion.FromString("8.0.23-mysql")));
 
             // to access session directly from view, corresponds with: @using Microsoft.AspNetCore.Http in Views/_ViewImports.cshtml
             services.AddHttpContextAccessor();

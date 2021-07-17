@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BryantCornerCafe.Migrations
 {
     [DbContext(typeof(BryantCornerCafeContext))]
-    [Migration("20210715073523_updateDishModelRemoveRel")]
-    partial class updateDishModelRemoveRel
+    [Migration("20210715221130_bugfix")]
+    partial class bugfix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -115,6 +115,9 @@ namespace BryantCornerCafe.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -125,15 +128,12 @@ namespace BryantCornerCafe.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("ParentCatCategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("SubCategoryId");
 
-                    b.HasIndex("ParentCatCategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("SubCategories");
                 });
@@ -236,7 +236,9 @@ namespace BryantCornerCafe.Migrations
                 {
                     b.HasOne("BryantCornerCafe.Models.Category", "ParentCat")
                         .WithMany("MySubCats")
-                        .HasForeignKey("ParentCatCategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ParentCat");
                 });

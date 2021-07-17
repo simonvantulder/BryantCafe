@@ -2,7 +2,7 @@
 
 namespace BryantCornerCafe.Migrations
 {
-    public partial class updateDishModelIntToDouble : Migration
+    public partial class bugfix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

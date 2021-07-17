@@ -2,7 +2,7 @@
 
 namespace BryantCornerCafe.Migrations
 {
-    public partial class updateDishModelSpellingError : Migration
+    public partial class fixDBConnections : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

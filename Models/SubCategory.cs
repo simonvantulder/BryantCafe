@@ -30,6 +30,7 @@ namespace BryantCornerCafe.Models
 
         [Display(Name = "Meal Category")]
         public int CategoryId  { get; set; }
+        
         public Category ParentCat { get; set; }
     }
 
