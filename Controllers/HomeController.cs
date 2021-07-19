@@ -60,7 +60,11 @@ namespace BryantCornerCafe.Controllers
         [HttpGet("/viewmenu/{categoryId}")]
         public IActionResult ViewMenu(int categoryId)
         {
-            Category category = db.Categories.Include(category => category.MySubCats).ThenInclude(subc => subc.MyDishes).FirstOrDefault(p => p.CategoryId == categoryId);
+            Category category = db.Categories
+                .Include(category => category.MySubCats)
+                .ThenInclude(csRel => csRel.MySubCat)
+                .ThenInclude(subc => subc.MyDishes)
+                .FirstOrDefault(p => p.CategoryId == categoryId);
             // List<SubCategory> subcategories = db.SubCategories.Include(sub => sub?.CategoryId != categoryId).ToList();
             // ViewBag.MySubCats = category.MySubCats.OrderByDescending(s => s.CreatedAt).ToList();
 
@@ -68,11 +72,7 @@ namespace BryantCornerCafe.Controllers
             {
                 return RedirectToAction("Dashboard");
             }
-            // List<Dish> allDishes = db.Dishes
-            // .Include(Dish => Dish.Chef)
-            // .OrderByDescending(Dish => Dish.CreatedAt)
-            // .ToList();
-            // ViewBag.AllDishes = allDishes;
+
             return View("ViewMenu", category);
         }
 
@@ -214,7 +214,7 @@ namespace BryantCornerCafe.Controllers
         public IActionResult EditCategory(int categoryId)
         {
             Category category = db.Categories.FirstOrDefault(p => p.CategoryId == categoryId);
-            
+
             List<SubCategory> allSubCats = db.SubCategories
             .OrderByDescending(SubC => SubC.CreatedAt)
             .ToList();
@@ -363,7 +363,7 @@ namespace BryantCornerCafe.Controllers
         [HttpPost("/category/link/{categoryId}/{subcategoryId}")]
         public IActionResult LinkSubCat(int categoryId, int subcategoryId)
         {
-            if(!isLoggedIn)
+            if (!isLoggedIn)
             {
                 return RedirectToAction("LoginPage", "Login");
             }
@@ -386,7 +386,7 @@ namespace BryantCornerCafe.Controllers
                 };
                 db.CSubRels.Add(newLink);
             }
-            
+
             db.SaveChanges();
 
             return RedirectToAction("EditSubCategory", "Home", subcategoryId);
@@ -396,7 +396,7 @@ namespace BryantCornerCafe.Controllers
         [HttpPost("/subcategory/link/{subcategoryId}/{dishId}")]
         public IActionResult LinkDish(int subcategoryId, int dishId)
         {
-            if(!isLoggedIn)
+            if (!isLoggedIn)
             {
                 return RedirectToAction("LoginPage", "Login");
             }
@@ -417,7 +417,7 @@ namespace BryantCornerCafe.Controllers
                 };
                 db.SubDRels.Add(newLink);
             }
-            
+
             db.SaveChanges();
 
             return RedirectToAction("Dashboard");

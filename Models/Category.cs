@@ -19,8 +19,6 @@ namespace BryantCornerCafe.Models
         [Required(ErrorMessage = "is required.")]
         public string Info { get; set; }
 
-
-
         //=========================================================================
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
@@ -28,7 +26,7 @@ namespace BryantCornerCafe.Models
         //=========================================================================
 
         //One Category to Many SubCategories 
-        public List<SubCategory> MySubCats { get; set; }
+        public List<CSubRel> MySubCats { get; set; }
 
     }
 

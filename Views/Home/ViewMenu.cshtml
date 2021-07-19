@@ -12,10 +12,11 @@
 @* <table style="width:100%"> *@
     
 
-@foreach (SubCategory item in ViewBag.MySubCats)
+@foreach (CSubRel item in @Model.MySubCats)
 {
     @* bool existingResponse = item.Tourists.Any(rsvp => rsvp.UserTouristId == (int)uid); *@
-    @foreach (Dish meal in item.MyDishes)
+    
+    @foreach (Dish meal in item.MySubCat.MyDishes)
     {
         <ul>
             <li>@meal.Name</li>
