@@ -1,7 +1,8 @@
 @model Category
 @{
     ViewData["Title"] = "Bryant Cafe Menu";
-
+    int? uid = @Context.Session.GetInt32("UserId");
+    Console.WriteLine(uid);
 }
 
 <h1>@Model.Name</h1>
@@ -14,20 +15,30 @@
 
 @foreach (CSubRel item in @Model.MySubCats)
 {
-    @* bool existingResponse = item.Tourists.Any(rsvp => rsvp.UserTouristId == (int)uid); *@
-    
+    <br/>
+    <table class="menu_table_head">
+            <tr>
+                <th>@item.MySubCat.Name</th>
+            </tr> 
+    </table>
+
     @foreach (Dish meal in item.MySubCat.MyDishes)
     {
-        <ul>
-            <li>@meal.Name</li>
-        </ul>
-
-        <ul>
-            <li>@meal.Description </li>
-            <li>@meal.Price </li>
-            <li>
-            @* @if (uid)///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// *@
+        <table class="menu_table">
+            <tr>
+                <th>@meal.Name</th>
+            <tr>
+                <td>@meal.Description</td>
+            <tr>
+                <td>$@meal.Price</td>
+            </tr>
+            </tr>    
+            </tr>
+        </table>   
+    
+            @if (uid != null)/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             {
+            <li>
                 @* Delete could be a GET request, but POST is better practice *@
                 <form asp-controller="Home" asp-action="Delete" asp-route-dishId="@meal.DishId" method="POST"
         class="d-inline-block">
@@ -37,9 +48,8 @@
         class="d-inline-block">
                     <button class="btn btn-sm btn-outline-warning">Edit my Dish</button>
                 </a>
-            }
             </li>
-        </ul>
+            }
     }
 }
 @* </table> *@

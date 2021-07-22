@@ -3,14 +3,16 @@ using System;
 using BryantCornerCafe.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BryantCornerCafe.Migrations
 {
     [DbContext(typeof(BryantCornerCafeContext))]
-    partial class BryantCornerCafeContextModelSnapshot : ModelSnapshot
+    [Migration("20210720231026_addToDishesModel")]
+    partial class addToDishesModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,10 +77,14 @@ namespace BryantCornerCafe.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("AddItem")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
@@ -87,6 +93,9 @@ namespace BryantCornerCafe.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("double");
+
+                    b.Property<string>("PriceInfo")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("SubCategoryId")
                         .HasColumnType("int");

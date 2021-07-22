@@ -9,14 +9,16 @@ namespace BryantCornerCafe.Models
 
         [Required(ErrorMessage = "is required.")]
         [MinLength(2, ErrorMessage = "must be at least 2 characters")]
-        [Display]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "is required.")]
-        [MinLength(2, ErrorMessage = "must be at least 2 characters")]     
+        // [Required(ErrorMessage = "is required.")]
+        // [MinLength(2, ErrorMessage = "must be at least 2 characters")]     
         public string Description { get; set; }
 
+        [Required(ErrorMessage = "is required.")]
         public double Price { get; set; }
+        // public string PriceInfo { get; set; }
+        // public string AddItem { get; set; }
 
 
         //=========================================================================

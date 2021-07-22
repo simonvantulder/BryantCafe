@@ -145,7 +145,7 @@ namespace BryantCornerCafe.Controllers
 
             return RedirectToAction("Dashboard", "Home");
         }
-        [HttpGet("logout")]
+        [HttpGet("/logout")]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();

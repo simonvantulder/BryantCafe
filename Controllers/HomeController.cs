@@ -98,7 +98,7 @@ namespace BryantCornerCafe.Controllers
         [HttpGet("/dish/new")]
         public IActionResult NewDish()
         {
-            List<SubCategory> allSubCategories = db.SubCategories.OrderByDescending(SubCategories => SubCategories.Name).Reverse().ToList();
+            List<SubCategory> allSubCategories = db.SubCategories.OrderBy(SubCategories => SubCategories.Name).ToList();
             ViewBag.AllSubCats = allSubCategories;
 
             return View("NewDish");
@@ -155,18 +155,22 @@ namespace BryantCornerCafe.Controllers
         [HttpPost("/dish/create")]
         public IActionResult CreateDish(Dish newDish)
         {
-            if (!isLoggedIn)
-            {
-                return RedirectToAction("LoginPage", "Login");
-            }
+            // if (!isLoggedIn)
+            // {
+            //     return RedirectToAction("LoginPage", "Login");
+            // }
+            Console.WriteLine("createdish start");
             if (!ModelState.IsValid)
             {
+                Console.WriteLine("modelstate invalid");
                 // To display validation errors.
                 return View("NewDish");
             }
 
+            Console.WriteLine("valid modelstate - before db entry");
             db.Dishes.Add(newDish);
             db.SaveChanges();
+            Console.WriteLine("db saved");
 
             return RedirectToAction("NewDish");
         }
@@ -424,9 +428,35 @@ namespace BryantCornerCafe.Controllers
         }
 
 
+        [HttpPost("/Category/delete/{categoryId}")]
+
+        public IActionResult DeleteCategory(int categoryId)
+        {
+            Category category = db.Categories.FirstOrDefault(p => p.CategoryId == categoryId);
+
+            if (category != null)
+            {
+                db.Categories.Remove(category);
+                db.SaveChanges();
+            }
+            return RedirectToAction("All");
+        }
+        [HttpPost("/subcategories/delete/{subcategoryId}")]
+
+        public IActionResult DeleteSubCategory(int subcategoryId)
+        {
+            SubCategory subcategory = db.SubCategories.FirstOrDefault(p => p.SubCategoryId == subcategoryId);
+
+            if (subcategory != null)
+            {
+                db.SubCategories.Remove(subcategory);
+                db.SaveChanges();
+            }
+            return RedirectToAction("All");
+        }
         [HttpPost("/dishes/delete/{dishId}")]
 
-        public IActionResult Delete(int dishId)
+        public IActionResult DeleteDish(int dishId)
         {
             Dish dish = db.Dishes.FirstOrDefault(p => p.DishId == dishId);
 
@@ -450,7 +480,6 @@ namespace BryantCornerCafe.Controllers
             }
             return RedirectToAction("Dashboard");
         }
-
 
     }
 }
